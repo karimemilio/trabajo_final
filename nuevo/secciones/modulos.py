@@ -32,4 +32,5 @@ def cargarInfo():
             return sel.seleccion(dicc)
 
 def jugar(dicc):
+    
     return None

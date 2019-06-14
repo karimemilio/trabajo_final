@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 
 
-
 def validar(dat):    #Retorna tupla (bool,tipo,definicion)
     vw = validarWiki(dat) #IMPLEMENTAR
     vp = validarPattern(dat) #IMPLEMENTAR

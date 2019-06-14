@@ -1,6 +1,7 @@
 from pattern.text.es import tag,parse, split
 import PySimpleGUI as sg
 from wiktionaryparser import WiktionaryParser
+
 def validacion(dat):
     parser = WiktionaryParser()
     parser.set_default_language('spanish')
@@ -16,7 +17,7 @@ def generarPalabras():
           [sg.Input(do_not_clear=False)],
           [sg.Text(' ', key= 'mensaje',size=(37,1))],
           [sg.Text(' ', key= 'palabras',size=(37,3))],
-          [sg.Button('Validar palabra'), sg.Button('Finalizar')]]
+          [sg.Button('Agregar'), sg.Button('Finalizar'),sg.Button('Eliminar')]]
     
     #Muestro la ventana
     ventanaPalabras = sg.Window('Sopa de letras',auto_size_text=True,default_element_size=(40, 1)).Layout(diseñoPalabras)      
@@ -31,20 +32,27 @@ def generarPalabras():
         if boton is None or boton == 'Finalizar':
             ventanaPalabras.Close()
             return ret
-        else:
-            if validacion(palabra):
-                tipo = (tag(palabra))[0][1]    #tag('palabra') devuelve una lista con una tupla (palabra,clasificacion)
+        elif validacion(palabra):
+            tipo = (tag(palabra))[0][1]    #tag('palabra') devuelve una lista con una tupla (palabra,clasificacion)
+            if boton == 'Agregar':
                 if palabra in dicc[tipo]:
                     mensaje='La palabra ya fue ingresada'
                 else:
                     dicc[tipo].append(palabra)
-                    tiposIngresados=('Adjetivos: ' + str(len(dicc['JJ'])) + '\n' + 'Sustantivos: ' + str(len(dicc['NN'])) + '\n' + 'Verbos: ' + str(len(dicc['VB'])))
                     mensaje='La palabra ingresada es válida'
                     ret = dicc
-            else:
-                mensaje='No se pudo clasificar la palabra'
-            ventanaPalabras.FindElement('mensaje').Update(mensaje)
-            ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
+            if boton == 'Eliminar': 
+                if palabra in dicc[tipo]:
+                    dicc[tipo].remove(palabra)
+                    mensaje='La palabra se eliminó'
+                else:
+                    mensaje='La palabra ingresada no está en la lista'
+        else:
+            mensaje='La palabra ingresada es inválida'
+        tiposIngresados=('Adjetivos: ' + str(len(dicc['JJ'])) + '\n' + 'Sustantivos: ' + str(len(dicc['NN'])) + '\n' + 'Verbos: ' + str(len(dicc['VB'])))
+        ventanaPalabras.FindElement('mensaje').Update(mensaje)
+        ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
+
 def seleccion(dicc):
     cant = {}
     for tipo in dicc:

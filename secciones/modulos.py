@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 import random
 import string
 
-cant_celdas = 15 #Cantidad de celdas
+cant_celdas = 10 #Cantidad de celdas
 tam_celda = 20 #Tamaño de cada celda
 tam_grilla = cant_celdas*tam_celda + 200 #Tamaño de la grilla
 grilla55 = (tam_grilla*55)/100
