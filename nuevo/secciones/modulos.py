@@ -1,5 +1,6 @@
 from secciones import ingresar as ip
 from secciones import seleccion as sel
+from secciones import seleccion as jug
 import PySimpleGUI as sg
 
 def esVacio(dicc):
@@ -7,6 +8,8 @@ def esVacio(dicc):
         return False
     else:
         return True
+
+
 
 def cargarInfo():
         dicc={'JJ': [] , 'NN': [], 'VB': []}    #Creo un diccionario vacío
@@ -32,5 +35,5 @@ def cargarInfo():
             return sel.seleccion(dicc)
 
 def jugar(dicc):
+    ori = orientacion()
     
-    return None

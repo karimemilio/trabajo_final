@@ -38,7 +38,7 @@ def generarPalabras(dicc):
                 else:
                     mensaje='La palabra ingresada no está en la lista'
         else:
-            mensaje='La palabra ingresada es inválida'
+            sg.PopupError('La palabra ingresada no es valida')
         tiposIngresados=('Adjetivos: ' + str(len(dicc['JJ'])) + '\n' + 'Sustantivos: ' + str(len(dicc['NN'])) + '\n' + 'Verbos: ' + str(len(dicc['VB'])))
         ventanaPalabras.FindElement('mensaje').Update(mensaje)
         ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
