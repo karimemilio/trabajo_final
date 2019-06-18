@@ -1,42 +1,47 @@
 import PySimpleGUI as sg
+from pattern.web import Wiktionary as wik
 from wiktionaryparser import WiktionaryParser
 from pattern.text.es import tag
 
-def validarPattern(pal):
-	tipo = (tag(palabra))[0][1]
+def validarPattern(pal): #Devuelve J,N,B
+	tipo = (tag(pal))[0][1]
 	if tipo:
-		tup = (True,tipo[1])
+		return (True,tipo[1])
 	else:
-		tup = (False,tipo[1])
-	return tup
+		return (False)
 
-def validarWiki(pal):
+def validarWiki(pal): #Devuelve adjective,noun,verb
     wik = WiktionaryParser()
     wik.set_default_language('spanish')
-    word = (parser.fetch(dat))[0]
-    data = word['etymology']
-    tipo = 'VB'
-    if (len(data) > 1):
-		tup = (True,tipo,data)
-	else:
-		tup = (False,tipo,data)   ##Se recupera el tipo con la key partOfSpeech
-	return tup
-	
+    word = (wik.fetch(pal))[0]
+    defi = word['etymology']
+    tipo = word['definitions'][0]['partOfSpeech']
+    if (len(defi) > 1):
+        if tipo == 'adjective':
+            tipo = 'J'
+        elif tipo == 'noun':
+            tipo = 'N'
+        else:
+            tipo = 'B'
+        return (True,tipo,defi[:-2])
+    else:
+        return (False)   ##Se recupera el tipo con la key partOfSpeech
+    
 def reporte(titu):     
 
 	sg.PopupError(titu)
 
 
-def validar(dat):    #Retorna tupla (bool,tipo,definicion)
-    vw = validarWiki(dat) #IMPLEMENTAR recuperar tipo
-    vp = validarPattern(dat) 
+def validar(dat):
+    vw = validarWiki(dat) #Retorna tupla (bool,tipo,definicion)
+    vp = validarPattern(dat) #Devuelve tupla (boolean,tipo)
     if vw[0]:
         if vp[0]:
-            if vw[1] != vw[1]:
-				titu = "Diferentes tipo de palabra"
+            if vw[1] != vp[1]:
+                titu = "Diferentes tipo de palabra"
                 reporte(titu) #reporte que son distintos tipos, tomamos wiki
         else:
-			titu = "Pattern invalido"
+            titu = "Pattern invalido"
             reporte(titu) #reporte de que pattern no valido, tomamos wiki
         return vw
     else:
@@ -45,6 +50,8 @@ def validar(dat):    #Retorna tupla (bool,tipo,definicion)
             reporte(titu)
             defi = 'Ingrese una definicion para la palabra:',dat    
             text = sg.PopupGetText(defi, 'Definicion')  
-            return (vp[0],vp[1],definicion)
-		else:
-			return (False,0,0)    ##No se encontro ni en wikidictionary ni en pattern
+            return (vp[0],vp[1],defi)
+        else:
+            titu = "No se encontro la palabra. No se ingresa"
+            reporte(titu)
+            return (False,1)    #No se encontro ni en wikidictionary ni en pattern

@@ -4,15 +4,13 @@ from secciones import seleccion as jug
 import PySimpleGUI as sg
 
 def esVacio(dicc):
-    if len(dicc['JJ']) > 0 or len(dicc['NN']) > 0 or len(dicc['VB']) > 0 :
+    if len(dicc['J']) > 0 or len(dicc['N']) > 0 or len(dicc['B']) > 0 :
         return False
     else:
         return True
 
-
-
 def cargarInfo():
-        dicc={'JJ': [] , 'NN': [], 'VB': []}    #Creo un diccionario vacío
+        dicc={'J': [] , 'N': [], 'B': []}    #Creo un diccionario vacío
 
         #Creo el diseño de la ventana
         diseñoInicial=[[sg.Text('  ¿Desea comenzar?', background_color='#e96b27',font=("scruff", 35))],

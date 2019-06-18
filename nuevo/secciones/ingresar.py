@@ -15,7 +15,7 @@ def generarPalabras(dicc):
     ventanaPalabras = sg.Window('Sopa de letras',auto_size_text=True,default_element_size=(40, 1)).Layout(diseñoPalabras)      
 
     #Proceso la información
-    tiposIngresados=('Adjetivos: ' + str(len(dicc['JJ'])) + '\n' + 'Sustantivos: ' + str(len(dicc['NN'])) + '\n' + 'Verbos: ' + str(len(dicc['VB']))) #Inicializo el mensaje a mostrar
+    tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B']))) #Inicializo el mensaje a mostrar
     while True:     #Se ingresan palabras hasta que se haga clic en 'Finalizar'
         boton, datos = ventanaPalabras.Read()   #Leo los datos de la ventana
         palabra = datos[0]                #Obtengo la palabra ingresada
@@ -23,7 +23,7 @@ def generarPalabras(dicc):
             ventanaPalabras.Close()
             return dicc
         else:
-            ingreso = validar(palabra) #Retorna tupla (bool,tipo,definicion)
+            ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
         if ingreso[0]:
             if boton == 'Agregar':
                 if palabra in dicc[ingreso[1]]:
@@ -39,7 +39,7 @@ def generarPalabras(dicc):
                     mensaje='La palabra ingresada no está en la lista'
         else:
             sg.PopupError('La palabra ingresada no es valida')
-        tiposIngresados=('Adjetivos: ' + str(len(dicc['JJ'])) + '\n' + 'Sustantivos: ' + str(len(dicc['NN'])) + '\n' + 'Verbos: ' + str(len(dicc['VB'])))
+        tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B'])))
         ventanaPalabras.FindElement('mensaje').Update(mensaje)
         ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
 
