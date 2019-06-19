@@ -26,7 +26,7 @@ def validarWiki(pal): #Devuelve adjective,noun,verb
         return (True,tipo,defi[:-2])
     else:
         return (False)   ##Se recupera el tipo con la key partOfSpeech
-    
+
 def reporte(titu):     
 
 	sg.PopupError(titu)

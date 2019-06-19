@@ -7,15 +7,15 @@ def seleccion(dicc):
         cant[tipo] = []
         for i in range(len(dicc[tipo])):
             cant[tipo].append(i+1)
-    layout = [[sg.Text('Adjetivos    '), sg.InputOptionMenu(cant['JJ'])],
-            [sg.Text('Sustantivos'), sg.InputOptionMenu(cant['NN'])],
-           [sg.Text('Verbos       '), sg.InputOptionMenu(cant['VB'])],
+    layout = [[sg.Text('Adjetivos    '), sg.InputOptionMenu(cant['J'])],
+            [sg.Text('Sustantivos'), sg.InputOptionMenu(cant['N'])],
+           [sg.Text('Verbos       '), sg.InputOptionMenu(cant['B'])],
            [sg.Button('Enviar'), sg.Button('Volver')]]
     window = sg.Window('Cantidad de palabras a buscar', default_element_size=(40, 1), grab_anywhere=False).Layout(layout)      
     event, values = window.Read()
-    cant['JJ'] = int(values[0])
-    cant['NN'] = int(values[1])
-    cant['VB'] = int(values[2])
+    cant['J'] = int(values[0])
+    cant['N'] = int(values[1])
+    cant['B'] = int(values[2])
     #Cree diccionario con clave:valor --> tipo de palabra:cantidad a elegir --> JJ:2
     nue = {}
     for tipo in cant:

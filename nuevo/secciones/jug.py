@@ -14,13 +14,10 @@ def orientacion():
         return event
         ventanaInicial.Close()
 
-def calLen(dic):
+def calcular_long(dic):        #Retorna la palabra mas larga
 	key = dic.keys()
 	maxi = 0
 	for i in key:
 		if (len(i) >  maxi):
 			maxi = len(i)
 	return maxi
-
-
-def

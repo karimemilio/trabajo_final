@@ -1,6 +1,6 @@
 from secciones import ingresar as ip
 from secciones import seleccion as sel
-from secciones import seleccion as jug
+from secciones import jug
 import PySimpleGUI as sg
 
 def esVacio(dicc):
@@ -33,5 +33,7 @@ def cargarInfo():
             return sel.seleccion(dicc)
 
 def jugar(dicc):
-    ori = orientacion()
+    ori = jug.orientacion()
+    longitud = len(jug.calcular_long())
+    
     

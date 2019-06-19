@@ -23,25 +23,31 @@ def generarPalabras(dicc):
             ventanaPalabras.Close()
             return dicc
         else:
-            ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
-        if ingreso[0]:
-            if boton == 'Agregar':
-                if palabra in dicc[ingreso[1]]:
-                    mensaje='La palabra ya fue ingresada'
+            try:
+                ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
+                if ingreso[0]:
+                    if boton == 'Agregar':
+                        lista_palabras = map(lambda item: item[0], dicc[ingreso[1]])
+                        if palabra in lista_palabras:
+                            mensaje='La palabra ya fue ingresada'
+                        else:
+                            dicc[ingreso[1]].append((palabra,ingreso[2])) #Agrego al diccionario de listas una tupla (palabra,definicion)
+                            mensaje='La palabra ingresada es válida'
+                    if boton == 'Eliminar': 
+                        lista_pal = map(lambda item: item[0], dicc[ingreso[1]])
+                        if palabra in lista_pal:
+                            dicc[ingreso[1]].remove((palabra,ingreso[2]))
+                            mensaje='La palabra se eliminó'
+                        else:
+                            mensaje='La palabra ingresada no está en la lista'
                 else:
-                    dicc[ingreso[1]].append((palabra,ingreso[2])) #Agrego al diccionario de listas una tupla (palabra,definicion)
-                    mensaje='La palabra ingresada es válida'
-            if boton == 'Eliminar': 
-                if palabra in dicc[ingreso[1]]:
-                    dicc[ingreso[1]].remove((palabra,ingreso[2]))
-                    mensaje='La palabra se eliminó'
-                else:
-                    mensaje='La palabra ingresada no está en la lista'
-        else:
-            sg.PopupError('La palabra ingresada no es valida')
-        tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B'])))
-        ventanaPalabras.FindElement('mensaje').Update(mensaje)
-        ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
+                    sg.PopupError('La palabra ingresada no es valida')
+                tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B'])))
+                ventanaPalabras.FindElement('mensaje').Update(mensaje)
+                ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
+
+            except:
+                print('Ha ocurrido un error')
 
 def seleccion(dicc):
     cant = {}
