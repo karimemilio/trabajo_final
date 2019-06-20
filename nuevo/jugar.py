@@ -8,22 +8,24 @@ def jugar(palabras, config):
     tam_celda = 20 #Tamaño de cada celda
     tam_grilla = cant_celdas*tam_celda +200
     grilla55 = (tam_grilla*55)/100
-    letters = string.ascii_lowercase
+    mayus = string.ascii_lowercase
+    minus = string.ascii_uppercase
 
     #Diseño de la ventana
     layout = [
                 [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
                 [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
-                [sg.Button('Show'), sg.Button('Exit')]
+                [sg.Button('Verbo', button_color=('black',config['B']['color'])),sg.Button('Adjetivo', button_color=('black',config['J']['color'])),sg.Button('Sustantivo', button_color=('black',config['N']['color']))],
+                [sg.Button('Borrar'), sg.Button('Show'), sg.Button('Exit')]
              ]
 
     #Crear estructura
     filas = []
-
+    
     for i in range(0, cant_celdas):
         columna = []
         for i in range(0, cant_celdas):
-            columna.append('')
+            columna.append('')    
         filas.append(columna)
 
     final_guardadas = []
@@ -37,12 +39,18 @@ def jugar(palabras, config):
             columna = random.randint(0, cant_celdas - len(palabra))
             se_puede = True
             for i in range(columna, len(palabra)):
+                print('FILAS', len(filas), filas)
+                print('LA FILA', fila)
+                print('I', i)
+                print('EL ELEMENTO', filas[fila-1])
                 if filas[fila-1][i] != '':
                     se_puede = False
                     break
             if se_puede:
                 aux = columna
                 for elemento in palabra:
+                    if config["mayuscula"] == True:
+                        elemento = elemento.upper()
                     filas[fila-1][aux] = elemento
                     aux += 1
                 final_guardadas.append({ 'palabra': palabra, 'columna': (fila, columna) })
@@ -54,7 +62,10 @@ def jugar(palabras, config):
         nro_caracter = 0
         for posicion in columna:
             if posicion == '':
-                caracter = random.choice(string.ascii_uppercase if config['mayuscula'] else string.ascii_lowercase)
+                if config["mayuscula"]:
+                    caracter = random.choice(minus)
+                else:
+                    caracter = random.choice(mayus)
                 filas[nro_columna][nro_caracter] = caracter
             nro_caracter += 1
         nro_columna += 1
@@ -77,17 +88,28 @@ def jugar(palabras, config):
         event, values = window.Read()
         if event is None or event == 'Exit':
             break
+        if event == 'Sustantivo':
+            color = config['N']['color']
+        elif event == 'Adjetivo':
+            color = config['J']['color']
+        else:
+            color=config['B']['color']
         mouse = values['_GRAPH_']
-
         if event == '_GRAPH_':
-            if mouse == (None, None):
+            if mouse == (None, None):   
                 continue
             box_x = mouse[0]//tam_celda
             box_y = mouse[1]//tam_celda
-            letter_location = (box_y, box_x )
+            letter_location = (box_x * tam_celda + 18, box_y * tam_celda + 17)
             print('Coordenada elegida:')
-            print(box_y + 1, box_x)
-            g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color='red')
+            print(box_x, box_y)
+            actual = filas[box_y][box_x]
+            print(actual)
+            g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+            filas[box_y][box_x] = actual
+            g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+            # if event == 'Borrar':
+            #     g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color=None)
             # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
 
 def getLongitudMaxima(palabras):
@@ -106,3 +128,4 @@ def getAllPalabras(palabras):
             lista.append(diccionario['palabra'])
 
     return lista
+
