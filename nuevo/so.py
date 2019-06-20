@@ -3,13 +3,6 @@ import PySimpleGUI as sg
 import random
 import string
 
-
-def armar(long):
-    lista = []
-    for i in range(long+3):
-        aux=[]
-        lista.append(aux)
-
 cant_celdas = 10 #Cantidad de celdas
 tam_celda = 20 #Tamaño de cada celda
 tam_grilla = cant_celdas*tam_celda + 200 #Tamaño de la grilla
@@ -20,7 +13,7 @@ letters = string.ascii_lowercase
 layout = [
             [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
             [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
-            [sg.Button('Show'), sg.Button('Exit')]
+            [sg.Button('elegir'), sg.Button('Salir')]
          ]
 
 window = sg.Window('Juego para niños', ).Layout(layout).Finalize()
@@ -29,8 +22,8 @@ g = window.FindElement('_GRAPH_')
 
 for row in range(cant_celdas):
     for col in range(cant_celdas):
-        g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3), (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3), line_color='black')
-        g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), (col * tam_celda + 15, row * tam_celda + 12))
+        g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3), (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3), line_color='black')   #Crear el cuadrado
+        g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), (col * tam_celda + 15, row * tam_celda + 12))					#Ingresa las letras
 
 while True:             # Event Loop
     event, values = window.Read()
@@ -46,7 +39,7 @@ while True:             # Event Loop
         letter_location = (box_x * tam_celda + 18, box_y * tam_celda + 17)
         print('Coordenada elegida:')
         print(box_x, box_y)
-        g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color='red')
+        g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='red', fill_color='yellow')
         # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
 
-window.Close()
+window.Close

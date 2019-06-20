@@ -1,7 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pattern.text.es import tag,parse, split
 import PySimpleGUI as sg
 from wiktionaryparser import WiktionaryParser
-from secciones import validaciones
+import validaciones
 
 def generarPalabras(dicc):
     #Creo el diseño de la ventana
@@ -9,7 +12,9 @@ def generarPalabras(dicc):
           [sg.Input(do_not_clear=False)],
           [sg.Text(' ', key= 'mensaje',size=(37,1))],
           [sg.Text(' ', key= 'palabras',size=(37,3))],
-          [sg.Button('Agregar'), sg.Button('Finalizar'),sg.Button('Eliminar')]]
+          [sg.Button('Agregar'), sg.Button('Finalizar'),sg.Button('Eliminar')],
+          [sg.Radio('Horizontal', 'RADIO1', default = True ), sg.Radio('Vertical', 'RADIO1')],
+          [sg.Checkbox('Ayuda')]]
     
     #Muestro la ventana
     ventanaPalabras = sg.Window('Sopa de letras',auto_size_text=True,default_element_size=(40, 1)).Layout(diseñoPalabras)      
@@ -18,20 +23,23 @@ def generarPalabras(dicc):
     tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B']))) #Inicializo el mensaje a mostrar
     while True:     #Se ingresan palabras hasta que se haga clic en 'Finalizar'
         boton, datos = ventanaPalabras.Read()   #Leo los datos de la ventana
-        palabra = datos[0]                #Obtengo la palabra ingresada
+        palabra = datos[0]
         if boton is None or boton == 'Finalizar':
             ventanaPalabras.Close()
-            return dicc
+            return (dicc, (True if datos[1] else False))
         else:
             try:
                 ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
                 if ingreso[0]:
                     if boton == 'Agregar':
-                        lista_palabras = map(lambda item: item[0], dicc[ingreso[1]])
+                        lista_palabras = map(lambda item: { item[0] : item[1] }, dicc[ingreso[1]])
                         if palabra in lista_palabras:
                             mensaje='La palabra ya fue ingresada'
                         else:
-                            dicc[ingreso[1]].append((palabra,ingreso[2])) #Agrego al diccionario de listas una tupla (palabra,definicion)
+                            if datos[3]:
+                                dicc[ingreso[1]].append({ 'palabra': palabra, 'descripcion': ''.join(ingreso[2]) })
+                            else:
+                                dicc[ingreso[1]].append({ 'palabra': palabra })
                             mensaje='La palabra ingresada es válida'
                     if boton == 'Eliminar': 
                         lista_pal = map(lambda item: item[0], dicc[ingreso[1]])

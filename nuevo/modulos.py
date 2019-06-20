@@ -1,6 +1,6 @@
-from secciones import ingresar as ip
-from secciones import seleccion as sel
-from secciones import jug
+import ingresar as ip
+import seleccion as sel
+import jugar as jugar_modulo
 import PySimpleGUI as sg
 
 def esVacio(dicc):
@@ -10,30 +10,27 @@ def esVacio(dicc):
         return True
 
 def cargarInfo():
-        dicc={'J': [] , 'N': [], 'B': []}    #Creo un diccionario vacío
-
-        #Creo el diseño de la ventana
+        dicc={'J': [] , 'N': [], 'B': []}
         diseñoInicial=[[sg.Text('  ¿Desea comenzar?', background_color='#e96b27',font=("scruff", 35))],
                 [sg.Button('Si', button_color=('black','#e96b27'),font=("scruff", 20)),
                 sg.Button('No', button_color=('black','#e96b27'),font=("scruff", 20))]]
-        
+
         #Muestro la ventana
-        ventanaInicial = sg.Window('Sopa de letras',auto_size_buttons=False,background_color='#e96b27').Layout(diseñoInicial) 
-        
+        ventanaInicial = sg.Window('Sopa de letras',auto_size_buttons=False,background_color='#e96b27').Layout(diseñoInicial)
+
         #Espero información
         event, values = ventanaInicial.Read()
         if event == 'Si':
-            dicc = ip.generarPalabras(dicc)
-        else: 
+            dicc, horizontal = ip.generarPalabras(dicc)
+        else:
             print('No quiso jugar :(')
         ventanaInicial.Close()
-        if esVacio(dicc): 
+        if esVacio(dicc):
             return None
         else:
-            return sel.seleccion(dicc)
+            resultado = sel.seleccion(dicc)
+            resultado['horizontal'] = horizontal
+        return (dicc, resultado)
 
-def jugar(dicc):
-    ori = jug.orientacion()
-    longitud = len(jug.calcular_long())
-    
-    
+def jugar(palabras, config):
+    jugar_modulo.jugar(palabras, config)
