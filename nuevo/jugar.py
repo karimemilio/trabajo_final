@@ -16,16 +16,16 @@ def jugar(palabras, config):
                 [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
                 [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
                 [sg.Button('Verbo', button_color=('black',config['B']['color'])),sg.Button('Adjetivo', button_color=('black',config['J']['color'])),sg.Button('Sustantivo', button_color=('black',config['N']['color']))],
-                [sg.Button('Borrar'), sg.Button('Show'), sg.Button('Exit')]
+                [sg.Button('Borrar'), sg.Button('Show',key = 'tipo'), sg.Button('Exit')]
              ]
 
     #Crear estructura
     filas = []
-    
+
     for i in range(0, cant_celdas):
         columna = []
         for i in range(0, cant_celdas):
-            columna.append('')    
+            columna.append('')
         filas.append(columna)
 
     final_guardadas = []
@@ -85,32 +85,36 @@ def jugar(palabras, config):
             g.DrawText('{}'.format(filas[row][col]), (col * tam_celda + 15, row * tam_celda + 12))
 
     while True:             # Event Loop
-        event, values = window.Read()
-        if event is None or event == 'Exit':
-            break
-        if event == 'Sustantivo':
-            color = config['N']['color']
-        elif event == 'Adjetivo':
-            color = config['J']['color']
-        else:
-            color=config['B']['color']
-        mouse = values['_GRAPH_']
-        if event == '_GRAPH_':
-            if mouse == (None, None):   
-                continue
-            box_x = mouse[0]//tam_celda
-            box_y = mouse[1]//tam_celda
-            letter_location = (box_x * tam_celda + 18, box_y * tam_celda + 17)
-            print('Coordenada elegida:')
-            print(box_x, box_y)
-            actual = filas[box_y][box_x]
-            print(actual)
-            g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
-            filas[box_y][box_x] = actual
-            g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
-            # if event == 'Borrar':
-            #     g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color=None)
-            # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
+        try:
+            event, values = window.Read()
+
+            if event is None or 'tipo' == 'Exit':
+                break
+            if event == 'Sustantivo':
+                    color = config['N']['color']
+            elif event == 'Adjetivo':
+                    color = config['J']['color']
+            elif event == 'Verbo':
+                color=config['B']['color']
+            mouse = values['_GRAPH_']
+            if event == '_GRAPH_':
+                if mouse == (None, None):
+                    continue
+                box_x = mouse[0]//tam_celda
+                box_y = mouse[1]//tam_celda
+                letter_location = (box_y,box_x)
+                print('Coordenada elegida:')
+                print(box_y + 1, box_x)
+                actual = filas[box_y][box_x]
+                print(actual)
+                g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+                filas[box_y][box_x] = actual
+                g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+                # if event == 'Borrar':
+                #     g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color=None)
+                # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
+        except:
+            pass
 
 def getLongitudMaxima(palabras):
     longitud = 0
@@ -128,4 +132,3 @@ def getAllPalabras(palabras):
             lista.append(diccionario['palabra'])
 
     return lista
-

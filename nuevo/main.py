@@ -4,8 +4,9 @@ import modulos
 import PySimpleGUI as sg
 
 def main():
-	palabras, config  = modulos.cargarInfo()
-	#print(palabras, config)
+	#palabras, config  = modulos.cargarInfo()
+	palabras = {'J': [{'palabra': 'blanco'},{'palabra': 'azul'}], 'N': [{'palabra': 'negro'}], 'B': [{'palabra': 'correr'}]}
+	config = {'J': {'cantidad': 1, 'color': 'red'}, 'N': {'cantidad': 1, 'color': 'white'}, 'B': {'cantidad': 1, 'color': 'yellow'}, 'mayuscula': False, 'horizontal': True}
 	if not palabras:
 		sg.PopupError('No se le cargaron datos al Diccionario')
 	else:
