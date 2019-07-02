@@ -3,6 +3,27 @@ import string
 import random
 import sys
 
+def actualizar_datos(final,y,x):
+    i_final = 0
+    print (final)
+    print(" ")
+    for pos in final:
+        for posicion in pos['posiciones']:
+            if posicion['pos'] == (y,x):
+                final[i_final]['selec'] = True
+                cumple = True
+                for elem in pos['posiciones']:
+                    if not elem['selec']:
+                        cumple = False
+                if cumple:
+                    final[i_final]['si'] = True
+                break
+        i_final += 1
+    print(final)
+    return final
+
+
+
 def jugar(palabras, config):
     cant_celdas = getLongitudMaxima(palabras) + 4 #Cantidad de celdas
     tam_celda = 20 #Tamaño de cada celda
@@ -16,7 +37,7 @@ def jugar(palabras, config):
                 [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
                 [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
                 [sg.Button('Verbo', button_color=('black',config['B']['color'])),sg.Button('Adjetivo', button_color=('black',config['J']['color'])),sg.Button('Sustantivo', button_color=('black',config['N']['color']))],
-                [sg.Button('Borrar'), sg.Button('Show',key = 'tipo'), sg.Button('Exit')]
+                [sg.Button('Finalizar',key = 'tipo'), sg.Button('Exit')]
              ]
 
     #Crear estructura
@@ -48,13 +69,19 @@ def jugar(palabras, config):
                     break
             if se_puede:
                 aux = columna
+                diccionario = { 'palabra': palabra,'posiciones': [], 'si':False}
                 for elemento in palabra:
                     if config["mayuscula"] == True:
                         elemento = elemento.upper()
+                    dic_posiciones = {}
+                    dic_posiciones['pos'] = (fila,aux)
+                    dic_posiciones['selc'] = False
+                    diccionario['posiciones'].append(dic_posiciones)
                     filas[fila-1][aux] = elemento
                     aux += 1
-                final_guardadas.append({ 'palabra': palabra, 'columna': (fila, columna) })
+                final_guardadas.append(diccionario)
                 no_termino = False
+
 
     #Insertar letras en el resto de la matriz
     nro_columna = 0
@@ -74,6 +101,7 @@ def jugar(palabras, config):
     print('-------------')
     print(final_guardadas)
 
+
     #Crear la vista
     window = sg.Window('Juego para niños', ).Layout(layout).Finalize()
 
@@ -89,7 +117,6 @@ def jugar(palabras, config):
     while True:             # Event Loop
         try:
             event, values = window.Read()
-
             if event is None or 'tipo' == 'Exit':
                 break
             if event == 'Sustantivo':
@@ -104,8 +131,9 @@ def jugar(palabras, config):
                     continue
                 box_x = mouse[0]//tam_celda
                 box_y = mouse[1]//tam_celda
-                letter_location = (box_y,box_x)
+                letter_location = (box_y + 1,box_x)
                 print('Coordenada elegida:')
+<<<<<<< HEAD
                 print(box_y + 1, box_x)
                 actual = filas[box_y][box_x]
                 print(actual)
@@ -130,6 +158,14 @@ def jugar(palabras, config):
                 # if event == 'Borrar':
                 #     g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color=None)
                 # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
+=======
+                print (letter_location)
+                final_guardadas = actualizar_datos(final_guardadas,box_y,box_x)
+                print (final_guardadas)
+                g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+                filas[box_y][box_x] = actual
+                g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+>>>>>>> e7d6c6ff5cf1083663c4255bf0ebb08dd376e945
         except:
             pass
 
