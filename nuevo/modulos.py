@@ -22,11 +22,11 @@ def cargarInfo():
         event, values = ventanaInicial.Read()
         if event == 'Si':
             dicc, horizontal = ip.generarPalabras(dicc)
-        else:
-            print('No quiso jugar :(')
+        # else:
+        #     print('No quiso jugar :(')
         ventanaInicial.Close()
         if esVacio(dicc):
-            return None
+            return None,None
         else:
             resultado = sel.seleccion(dicc)
             resultado['horizontal'] = horizontal

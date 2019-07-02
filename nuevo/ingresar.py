@@ -30,14 +30,16 @@ def generarPalabras(dicc):
         else:
             try:
                 ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
-                if ingreso[0]:
+                if ingreso[0] == True:
                     if boton == 'Agregar':
-                        lista_palabras = map(lambda item: { item[0] : item[1] }, dicc[ingreso[1]])
+                        # lista_palabras = dicc[ingreso[1]]
+                        # lista_palabras = map(lambda item: item[0], dicc[ingreso[1]])
+                        # lista_palabras = map(lambda item: { item[0] : item[1] }, dicc[ingreso[1]])
                         if palabra in lista_palabras:
                             mensaje='La palabra ya fue ingresada'
                             print("Ya esta en la lista")
                         else:
-                            if datos[3]:
+                            if datos[3] != None:
                                 print("Intenta agregar a la lista")
                                 dicc[ingreso[1]].append({ 'palabra': palabra, 'descripcion': ''.join(ingreso[2]) })
                                 print("Agrega a la lista con descripcion")

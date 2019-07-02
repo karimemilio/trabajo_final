@@ -83,7 +83,9 @@ def jugar(palabras, config):
         for col in range(cant_celdas):
             g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3), (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3), line_color='black')
             g.DrawText('{}'.format(filas[row][col]), (col * tam_celda + 15, row * tam_celda + 12))
-
+    def dif(a,b):
+        return abs(a[0]+a[1]-b[0]-b[1])
+    ok=False
     while True:             # Event Loop
         try:
             event, values = window.Read()
@@ -107,9 +109,24 @@ def jugar(palabras, config):
                 print(box_y + 1, box_x)
                 actual = filas[box_y][box_x]
                 print(actual)
-                g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
-                filas[box_y][box_x] = actual
-                g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+                if ok==False or dif(letter_location,letter_actual) == 1:
+                    g = window.FindElement('_GRAPH_')
+                    g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+                    filas[box_y][box_x] = actual
+                    g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+                    letter_actual=letter_location
+                    ok=True
+                else:
+                    g = window.FindElement('_GRAPH_')
+                    for row in range(cant_celdas):
+                        for col in range(cant_celdas):
+                            g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3), (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3), line_color='black',fill_color=background)
+                            g.DrawText('{}'.format(filas[row][col]), (col * tam_celda + 15, row * tam_celda + 12))
+                    g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+                    filas[box_y][box_x] = actual
+                    g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+                    letter_actual=letter_location
+                    ok=True
                 # if event == 'Borrar':
                 #     g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color=None)
                 # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
