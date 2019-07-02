@@ -133,7 +133,6 @@ def jugar(palabras, config):
                 box_y = mouse[1]//tam_celda
                 letter_location = (box_y + 1,box_x)
                 print('Coordenada elegida:')
-<<<<<<< HEAD
                 print(box_y + 1, box_x)
                 actual = filas[box_y][box_x]
                 print(actual)
@@ -158,14 +157,6 @@ def jugar(palabras, config):
                 # if event == 'Borrar':
                 #     g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color=None)
                 # g.DrawText('{}'.format(random.choice(string.ascii_uppercase)), letter_location, font='Courier 25')
-=======
-                print (letter_location)
-                final_guardadas = actualizar_datos(final_guardadas,box_y,box_x)
-                print (final_guardadas)
-                g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
-                filas[box_y][box_x] = actual
-                g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
->>>>>>> e7d6c6ff5cf1083663c4255bf0ebb08dd376e945
         except:
             pass
 
