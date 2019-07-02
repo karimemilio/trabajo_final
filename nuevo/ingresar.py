@@ -40,15 +40,18 @@ def generarPalabras(dicc):
                 pos = 0
                 if boton == 'Eliminar': 
                     if palabra in lista_palabras:
-                        lista = dicc[ingreso[1]]
-                        for elem in lista:
-                            dic = elem.values()
-                            if palabra in dic:
-                                index = pos
-                            else:
-                                pos += 1
-                        dicc[ingreso[1]].pop(index)
+                        dicc[ingreso[1]] = list(filter(lambda di:di['palabra']!=palabra, dicc[ingreso[1]]))
                         lista_palabras.remove(palabra)
+
+ #                       lista = dicc[ingreso[1]]
+ #                       for elem in lista:
+ #                           dic = elem.values()
+ #                           if palabra in dic:
+  #                              index = pos
+   #                         else:
+   #                             pos += 1
+#                        dicc[ingreso[1]].pop(index)
+
                         mensaje='La palabra se eliminó'
                     else:
                         mensaje='La palabra ingresada no está en la lista'

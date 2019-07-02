@@ -2,25 +2,35 @@ import PySimpleGUI as sg
 import string
 import random
 import sys
+def hash (y,x):
+    pos = (str(y)+','+str(x))
+    return pos
 
-def actualizar_datos(final,y,x):
-    i_final = 0
-    print (final)
-    print(" ")
-    for pos in final:
-        for posicion in pos['posiciones']:
-            if posicion['pos'] == (y,x):
-                final[i_final]['selec'] = True
-                cumple = True
-                for elem in pos['posiciones']:
-                    if not elem['selec']:
-                        cumple = False
-                if cumple:
-                    final[i_final]['si'] = True
-                break
-        i_final += 1
-    print(final)
+def actualizar_datos(final,indice,y,x):
+    palabra = indice[hash(y,x)]
+    for each in final[palabra]:
+        if(each['pos'] == (y,x)):
+            each['selec'] = not each['selec']
+            break
     return final
+
+   # i_final = 0
+   # print (final)
+   # print(" ")
+    # for pos in final:
+    #     for posicion in pos['posiciones']:
+    #         if posicion['pos'] == (y,x):
+    #             final[i_final]['selec'] = True
+    #             cumple = True
+    #             for elem in pos['posiciones']:
+    #                 if not elem['selec']:
+    #                     cumple = False
+    #             if cumple:
+    #                 final[i_final]['si'] = True
+    #             break
+    #    i_final += 1
+    #print(final)
+   # return final
 
 
 
@@ -50,7 +60,7 @@ def jugar(palabras, config):
         filas.append(columna)
 
     final_guardadas = []
-
+    indice_palabras = {}
     #Insertar todas las palabras
     lista_de_palabras = getAllPalabras(palabras)
     for palabra in lista_de_palabras:
@@ -60,10 +70,6 @@ def jugar(palabras, config):
             columna = random.randint(0, cant_celdas - len(palabra))
             se_puede = True
             for i in range(columna, len(palabra)):
-                print('FILAS', len(filas), filas)
-                print('LA FILA', fila)
-                print('I', i)
-                print('EL ELEMENTO', filas[fila-1])
                 if filas[fila-1][i] != '':
                     se_puede = False
                     break
@@ -75,6 +81,7 @@ def jugar(palabras, config):
                         elemento = elemento.upper()
                     dic_posiciones = {}
                     dic_posiciones['pos'] = (fila,aux)
+                    indice_palabras[hash(fila,aux)] = palabra
                     dic_posiciones['selc'] = False
                     diccionario['posiciones'].append(dic_posiciones)
                     filas[fila-1][aux] = elemento
@@ -132,11 +139,17 @@ def jugar(palabras, config):
                 letter_location = (box_y + 1,box_x)
                 print('Coordenada elegida:')
                 print (letter_location)
-                final_guardadas = actualizar_datos(final_guardadas,box_y,box_x)
+                final_guardadas = actualizar_datos(final_guardadas,indice_palabras, box_y,box_x)
                 print (final_guardadas)
-                g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+
+
+                # g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color= color)
+                # filas[box_y][box_x] = actual
+                # g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+
                 filas[box_y][box_x] = actual
-                g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
+                g.DrawRectangle ( ((box_x * tam_celda + 5, box_y) * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black',fill_color = color) 
+                g.DrawText(actual, (box_x * tam_celda + 15, box_y * tam_celda + 12))
         except:
             pass
 
