@@ -4,13 +4,15 @@ import modulos
 import PySimpleGUI as sg
 
 def main():
-	#palabras, config  = modulos.cargarInfo()
-	palabras = {'J': [{'palabra': 'blanco'},{'palabra': 'azul'}], 'N': [{'palabra': 'negro'}], 'B': [{'palabra': 'correr'}]}
-	config = {'J': {'cantidad': 1, 'color': 'red'}, 'N': {'cantidad': 1, 'color': 'white'}, 'B': {'cantidad': 1, 'color': 'yellow'}, 'mayuscula': False, 'horizontal': True}
-	if not palabras:
-		sg.PopupError('No se le cargaron datos al Diccionario')
+	palabras, config  = modulos.cargarInfo()
+	print('--------------palabras--------------')
+	print(palabras)
+	print ('---------------------COONFIGURACION--------------')
+	print (config)
+	if config == None:
+		print('Fin de la ejecucion')
 	else:
-		modulos.jugar(palabras, config)
+		modulos.jugar(palabras,config)
 
 if __name__ == '__main__':
 		main()

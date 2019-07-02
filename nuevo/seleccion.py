@@ -18,13 +18,18 @@ def seleccion(dicc):
     [sg.Text('Sustantivos'), sg.InputOptionMenu(lista[1]), sg.InputOptionMenu(colores)],
     [sg.Text('Verbos       '), sg.InputOptionMenu(lista[2]), sg.InputOptionMenu(colores)],
     [sg.Radio('Mayuscula', 'RADIO2', default=True), sg.Radio('Minuscula', 'RADIO2')],
+    [sg.Radio('Horizontal', 'RADIO1', default = True ), sg.Radio('Vertical', 'RADIO1')],
+    [sg.Checkbox('Ayuda')],
     [sg.Button('Enviar'), sg.Button('Volver')]]
+
     window = sg.Window('Cantidad de palabras a buscar', default_element_size=(40, 1), grab_anywhere=False).Layout(layout)
     event, values = window.Read()
     cant['J'] = { 'cantidad': int(values[0]), 'color': colors[colores.index(values[1])]}
     cant['N'] = { 'cantidad': int(values[2]), 'color': colors[colores.index(values[3])] }
     cant['B'] = { 'cantidad': int(values[4]), 'color': colors[colores.index(values[5])] }
     cant['mayuscula'] = True if values[6] else False
+    cant['Horinzontal'] = True if values[8] else False
+    cant['ayuda'] = True if values[10] else False
     #Cree diccionario con clave:valor --> tipo de palabra:cantidad a elegir --> JJ:2
     #nue = {}
     #for tipo in cant:

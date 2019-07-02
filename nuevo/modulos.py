@@ -20,17 +20,16 @@ def cargarInfo():
 
         #Espero información
         event, values = ventanaInicial.Read()
+        resultado = None
         if event == 'Si':
-            dicc, horizontal = ip.generarPalabras(dicc)
-        else:
-            print('No quiso jugar :(')
-        ventanaInicial.Close()
-        if esVacio(dicc):
-            return None
-        else:
-            resultado = sel.seleccion(dicc)
-            resultado['horizontal'] = horizontal
-        return (dicc, resultado)
+            ventanaInicial.Close()
+            dicc = ip.generarPalabras(dicc)
+            if esVacio(dicc):
+                sg.PopupError('Se decidio no jugar')
+                return None,None
+            else:
+                resultado = sel.seleccion(dicc)
+        return (dicc,resultado)
 
 def jugar(palabras, config):
     jugar_modulo.jugar(palabras, config)
