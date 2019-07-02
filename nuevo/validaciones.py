@@ -8,7 +8,7 @@ def validarPattern(pal): #Devuelve J,N,B
 	if tipo:
 		return (True,tipo[1])
 	else:
-		return (False)
+		return (False,False)
 
 def validarWiki(pal): #Devuelve adjective,noun,verb
     wik = WiktionaryParser()
@@ -25,7 +25,7 @@ def validarWiki(pal): #Devuelve adjective,noun,verb
             tipo = 'B'
         return (True,tipo,defi[:-2])
     else:
-        return (False)   ##Se recupera el tipo con la key partOfSpeech
+        return (False,False)   ##Se recupera el tipo con la key partOfSpeech
 
 def reporte(titu):     
 
