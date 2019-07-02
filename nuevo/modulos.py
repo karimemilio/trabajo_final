@@ -22,7 +22,6 @@ def cargarInfo():
         event, values = ventanaInicial.Read()
         resultado = None
         if event == 'Si':
-<<<<<<< HEAD
             ventanaInicial.Close()
             dicc = ip.generarPalabras(dicc)
             if esVacio(dicc):
@@ -31,18 +30,6 @@ def cargarInfo():
             else:
                 resultado = sel.seleccion(dicc)
         return (dicc,resultado)
-=======
-            dicc, horizontal = ip.generarPalabras(dicc)
-        # else:
-        #     print('No quiso jugar :(')
-        ventanaInicial.Close()
-        if esVacio(dicc):
-            return None,None
-        else:
-            resultado = sel.seleccion(dicc)
-            resultado['horizontal'] = horizontal
-        return (dicc, resultado)
->>>>>>> 0422f448a8c2db6ca43b7bb270ceaf388fa12cf0
 
 def jugar(palabras, config):
     jugar_modulo.jugar(palabras, config)

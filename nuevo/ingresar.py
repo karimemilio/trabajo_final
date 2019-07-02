@@ -6,16 +6,6 @@ import PySimpleGUI as sg
 from wiktionaryparser import WiktionaryParser
 import validaciones
 
-def listaPal(dicc):
-    '''
-        Retorna una lista de las palabras que ya habian sido cargadas
-    '''
-    lista = []
-    for i in dicc:
-        for j in dicc[i]:
-            lista.append(dicc[i][j])
-    return lista
-
 def generarPalabras(dicc):
     #Creo el diseño de la ventana
     diseñoPalabras = [[sg.Text('Ingrese una palabra')],
@@ -37,7 +27,6 @@ def generarPalabras(dicc):
             ventanaPalabras.Close()
             return (dicc)
         else:
-<<<<<<< HEAD
             ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
             if ingreso[0]:
                 if boton == 'Agregar':
@@ -56,26 +45,6 @@ def generarPalabras(dicc):
                             dic = elem.values()
                             if palabra in dic:
                                 index = pos
-=======
-            try:
-                ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
-                if ingreso[0] == True:
-                    if boton == 'Agregar':
-                        lis = listaPal(dicc)
-                        # lista_palabras = dicc[ingreso[1]]
-                        # lista_palabras = map(lambda item: item[0], dicc[ingreso[1]])
-                        # lista_palabras = map(lambda item: { item[0] : item[1] }, dicc[ingreso[1]])
-                        if palabra in lis:
-                            mensaje='La palabra ya fue ingresada'
-                            print("Ya esta en la lista")
-                        else:
-                            print(datos[3])
-                            if datos[3] != None:
-                                print("Intenta agregar a la lista")
-                                dicc[ingreso[1]].append({ 'palabra': palabra, 'descripcion': ''.join(ingreso[2]) })
-                                print("Agrega a la lista con descripcion")
-                                print(" ")
->>>>>>> 0422f448a8c2db6ca43b7bb270ceaf388fa12cf0
                             else:
                                 pos += 1
                         dicc[ingreso[1]].pop(index)
