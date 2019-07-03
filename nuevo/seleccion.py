@@ -30,14 +30,4 @@ def seleccion(dicc):
     cant['mayuscula'] = True if values[6] else False
     cant['Horinzontal'] = True if values[8] else False
     cant['ayuda'] = True if values[10] else False
-    #Cree diccionario con clave:valor --> tipo de palabra:cantidad a elegir --> JJ:2
-    #nue = {}
-    #for tipo in cant:
-    #    nue[tipo] = []  #Diccionario del tipo clave:valor --> tipo de palabra : lista de palabaras seleccionadas
-    #    for i in range(cant[tipo]):
-    #        aux=random.choice(dicc[tipo])
-    #        while aux in nue[tipo]:
-    #            aux=random.choice(dicc[tipo])
-    #        nue[tipo].append(aux)
-
     return cant
