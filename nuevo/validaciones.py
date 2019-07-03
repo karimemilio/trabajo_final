@@ -36,26 +36,30 @@ def validarWiki(pal): #Devuelve adjective,noun,verb
 # 	sg.PopupError(titu)
 
 
-def validar(dat,reporte):
+def validar(dat,reporte,boton):
     vw = validarWiki(dat) #Retorna tupla (bool,tipo,definicion)
     vp = validarPattern(dat) #Devuelve tupla (boolean,tipo)
     if vw[0]:
-        if vp[0]:
-            if vw[1] != vp[1]:
-                titu = dat + ": La clasificación de Wiktionary no coincide con la de Pattern. Tomamos como válida la clasificación de Wiktionary"
-                agregar(titu,reporte) #reporte que son distintos tipos, tomamos wiki
-        else:
-            titu = dat + ": La clasificación de Pattern es inváida. Tomamos como válida la clasificación de Wiktionary"
-            agregar(titu,reporte) #reporte de que pattern no valido, tomamos wiki
+        if boton == 'Agregar':
+            if vp[0]:
+                if vw[1] != vp[1]:
+                    titu = dat + ": La clasificación de Wiktionary no coincide con la de Pattern. Tomamos como válida la clasificación de Wiktionary"
+                    agregar(titu,reporte) #reporte que son distintos tipos, tomamos wiki
+            else:
+                titu = dat + ": La clasificación de Pattern es inváida. Tomamos como válida la clasificación de Wiktionary"
+                agregar(titu,reporte) #reporte de que pattern no valido, tomamos wiki
         return vw
     else:
         if vp[0]:
-            titu = dat + ": La clasificación de Wiktionary es inváida. Tomamos como válida la clasificación de Pattern"
-            agregar (titu,reporte)
-            defi = 'Ingrese una definicion para la palabra: ' + str(dat)    
-            text = sg.PopupGetText(defi, 'Definicion')
+            text = None
+            if boton == 'Agregar':
+                titu = dat + ": La clasificación de Wiktionary es inváida. Tomamos como válida la clasificación de Pattern"
+                agregar (titu,reporte)
+                defi = 'Ingrese una definicion para la palabra: ' + str(dat)    
+                text = sg.PopupGetText(defi, 'Definicion')
             return (vp[0],vp[1],text)
         else:
-            titu = dat + ": No se encontró la palabra. No se ingresa"
-            agregar(titu,reporte)
+            if boton == 'Agregar':
+                titu = dat + ": No se encontró la palabra. No se ingresa"
+                agregar(titu,reporte)
             return (False,1)    #No se encontro ni en wikidictionary ni en pattern

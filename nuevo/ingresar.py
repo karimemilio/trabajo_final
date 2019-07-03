@@ -20,33 +20,41 @@ def generarPalabras(dicc):
     #Proceso la información
     tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B']))) #Inicializo el mensaje a mostrar
     lista_palabras = []
+    reporte = []
     while True:     #Se ingresan palabras hasta que se haga clic en 'Finalizar'
         boton, datos = ventanaPalabras.Read()   #Leo los datos de la ventana
-        palabra = datos[0].lower()
-        if boton is None or boton == 'Finalizar':
+        if boton is None:
             ventanaPalabras.Close()
+            return None
+        elif boton == 'Finalizar':
             return (dicc)
         else:
-            bool, tipo, defi = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
-            if bool:
-                if boton == 'Agregar':
-                    if palabra in lista_palabras:
-                        mensaje='La palabra ya fue ingresada'
-                    else:
-                        dicc[tipo].append({ 'palabra': palabra, 'descripcion': ''.join(defi) })
-                        mensaje = 'La palabra fue ingresada correctamente'
-                        lista_palabras.append(palabra)
-                        print(lista_palabras)
-                if boton == 'Eliminar': 
-                    if palabra in lista_palabras:
-                        dicc[tipo] = list(filter(lambda di:di['palabra']!=palabra, dicc[tipo]))
-                        lista_palabras.remove(palabra)
-                        mensaje='La palabra se eliminó'
-                    else:
-                        mensaje='La palabra ingresada no está en la lista'
+            palabra = datos[0].lower()
+            print('---------PALABRA--------')
+            print(palabra)
+            if palabra == '':
+                mensaje='No se especificó una palabra'
             else:
-                sg.PopupError('La palabra ingresada no es valida')
-            tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B'])))
+                bool, tipo, defi = validaciones.validar(palabra,reporte,boton) #Retorna tupla (bool,tipo,definicion)
+                if bool:
+                    if boton == 'Agregar':
+                        if palabra in lista_palabras:
+                            mensaje='La palabra ya fue ingresada'
+                        else:
+                            dicc[tipo].append({ 'palabra': palabra, 'descripcion': ''.join(defi) })
+                            mensaje = 'La palabra fue ingresada correctamente'
+                            lista_palabras.append(palabra)
+                            print(lista_palabras)
+                    if boton == 'Eliminar': 
+                        if palabra in lista_palabras:
+                            dicc[tipo] = list(filter(lambda di:di['palabra']!=palabra, dicc[tipo]))
+                            lista_palabras.remove(palabra)
+                            mensaje='La palabra se eliminó'
+                        else:
+                            mensaje='La palabra ingresada no está en la lista'
+                else:
+                    sg.PopupError('La palabra ingresada no es valida')
+                tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B'])))
             ventanaPalabras.FindElement('mensaje').Update(mensaje)
             ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
 
