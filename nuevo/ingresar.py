@@ -12,7 +12,7 @@ def generarPalabras(dicc):
           [sg.Input(do_not_clear=False)],
           [sg.Text(' ', key= 'mensaje',size=(37,1))],
           [sg.Text(' ', key= 'palabras',size=(37,3))],
-          [sg.Button('Agregar'), sg.Button('Finalizar'),sg.Button('Eliminar')] ]
+          [sg.Button('Agregar'), sg.Button('Finalizar'),sg.Button('Eliminar'),sg.Button('Lista de palabras')] ]
 
     #Muestro la ventana
     ventanaPalabras = sg.Window('Sopa de letras',auto_size_text=True,default_element_size=(40, 1)).Layout(diseñoPalabras)
@@ -28,10 +28,16 @@ def generarPalabras(dicc):
             return None
         elif boton == 'Finalizar':
             return (dicc)
+        elif boton == 'Lista de palabras':
+            lis = []
+            for pos in dicc:
+                aux = str(pos)+':'
+                for pal in dicc[pos]:
+                    aux = aux + ' ' + str(pal['palabra']) + str(', ')
+                lis.append(aux)
+            sg.Popup('Palabras ingresadas', str(lis))
         else:
             palabra = datos[0].lower()
-            print('---------PALABRA--------')
-            print(palabra)
             if palabra == '':
                 mensaje='No se especificó una palabra'
             else:
@@ -44,7 +50,6 @@ def generarPalabras(dicc):
                             dicc[tipo].append({ 'palabra': palabra, 'descripcion': ''.join(defi) })
                             mensaje = 'La palabra fue ingresada correctamente'
                             lista_palabras.append(palabra)
-                            print(lista_palabras)
                     if boton == 'Eliminar': 
                         if palabra in lista_palabras:
                             dicc[tipo] = list(filter(lambda di:di['palabra']!=palabra, dicc[tipo]))
@@ -57,7 +62,6 @@ def generarPalabras(dicc):
                 tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B'])))
             ventanaPalabras.FindElement('mensaje').Update(mensaje)
             ventanaPalabras.FindElement('palabras').Update(tiposIngresados)
-
 
 def seleccion(dicc):
     cant = {}
