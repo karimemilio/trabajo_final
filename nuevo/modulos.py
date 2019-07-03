@@ -24,7 +24,7 @@ def cargarInfo():
         if event == 'Si':
             ventanaInicial.Close()
             dicc = ip.generarPalabras(dicc)
-            if esVacio(dicc):
+            if dicc == None or esVacio(dicc):
                 sg.PopupError('Se decidio no jugar')
                 return None,None
             else:

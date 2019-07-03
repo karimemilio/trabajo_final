@@ -20,14 +20,18 @@ def generarPalabras(dicc):
     #Proceso la información
     tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B']))) #Inicializo el mensaje a mostrar
     lista_palabras = []
+    reporte = []
     while True:     #Se ingresan palabras hasta que se haga clic en 'Finalizar'
         boton, datos = ventanaPalabras.Read()   #Leo los datos de la ventana
-        palabra = datos[0].lower()
-        if boton is None or boton == 'Finalizar':
+        if boton is None:
             ventanaPalabras.Close()
-            return (dicc)
+            return None
+        elif boton == 'Finalizar':
+            ventanaPalabras.Close()
+            return dicc
         else:
-            ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
+            palabra = datos[0].lower()
+            ingreso = validaciones.validar(palabra,reporte) #Retorna tupla (bool,tipo,definicion)
             if ingreso[0]:
                 if boton == 'Agregar':
                     if palabra in lista_palabras:
