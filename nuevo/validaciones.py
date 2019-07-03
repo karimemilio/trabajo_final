@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from pattern.web import Wiktionary as wik
 from wiktionaryparser import WiktionaryParser
 from pattern.text.es import tag
-from reporte import *
+from reportes import *
 
 def validarPattern(pal): #Devuelve J,N,B
 	tipo = (tag(pal))[0][1]
