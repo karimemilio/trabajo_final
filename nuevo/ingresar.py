@@ -27,31 +27,20 @@ def generarPalabras(dicc):
             ventanaPalabras.Close()
             return (dicc)
         else:
-            ingreso = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
-            if ingreso[0]:
+            bool, tipo, defi = validaciones.validar(palabra) #Retorna tupla (bool,tipo,definicion)
+            if bool:
                 if boton == 'Agregar':
                     if palabra in lista_palabras:
                         mensaje='La palabra ya fue ingresada'
                     else:
-                        dicc[ingreso[1]].append({ 'palabra': palabra, 'descripcion': ''.join(ingreso[2]) })
+                        dicc[tipo].append({ 'palabra': palabra, 'descripcion': ''.join(defi) })
                         mensaje = 'La palabra fue ingresada correctamente'
                         lista_palabras.append(palabra)
                         print(lista_palabras)
-                pos = 0
                 if boton == 'Eliminar': 
                     if palabra in lista_palabras:
-                        dicc[ingreso[1]] = list(filter(lambda di:di['palabra']!=palabra, dicc[ingreso[1]]))
+                        dicc[tipo] = list(filter(lambda di:di['palabra']!=palabra, dicc[tipo]))
                         lista_palabras.remove(palabra)
-
- #                       lista = dicc[ingreso[1]]
- #                       for elem in lista:
- #                           dic = elem.values()
- #                           if palabra in dic:
-  #                              index = pos
-   #                         else:
-   #                             pos += 1
-#                        dicc[ingreso[1]].pop(index)
-
                         mensaje='La palabra se eliminó'
                     else:
                         mensaje='La palabra ingresada no está en la lista'

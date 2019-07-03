@@ -7,16 +7,24 @@ def hash (y,x):
     return pos
 
 def actualizar_datos(final,indice,y,x):
-    palabra = indice[hash(y,x)]
+    y = y + 1
+    print("---Entra al actualizar----")
+    posi = hash(y,x)
+    palabra = indice[posi]
+    fi = final[palabra]
+    print(fi)
     for each in final[palabra]:
+        print("entra al for")
         if(each['pos'] == (y,x)):
             each['selec'] = not each['selec']
             break
+    print("Sale del actualizar---")
     return final
 
-   # i_final = 0
-   # print (final)
-   # print(" ")
+
+    # i_final = 0
+    # print (final)
+    # print(" ")
     # for pos in final:
     #     for posicion in pos['posiciones']:
     #         if posicion['pos'] == (y,x):
@@ -28,9 +36,9 @@ def actualizar_datos(final,indice,y,x):
     #             if cumple:
     #                 final[i_final]['si'] = True
     #             break
-    #    i_final += 1
-    #print(final)
-   # return final
+    #     i_final += 1
+    # print(final)
+    # return final
 
 
 
@@ -61,6 +69,7 @@ def jugar(palabras, config):
 
     final_guardadas = []
     indice_palabras = {}
+
     #Insertar todas las palabras
     lista_de_palabras = getAllPalabras(palabras)
     for palabra in lista_de_palabras:
@@ -113,7 +122,7 @@ def jugar(palabras, config):
     window = sg.Window('Juego para niños', ).Layout(layout).Finalize()
 
     g = window.FindElement('_GRAPH_')
-
+    #Crea la matriz
     for row in range(cant_celdas):
         for col in range(cant_celdas):
             g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3), (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3), line_color='black')
@@ -140,6 +149,7 @@ def jugar(palabras, config):
                 print('Coordenada elegida:')
                 print (letter_location)
                 final_guardadas = actualizar_datos(final_guardadas,indice_palabras, box_y,box_x)
+                print ("-----------------y aca ----------")
                 print (final_guardadas)
 
 
@@ -147,12 +157,13 @@ def jugar(palabras, config):
                 # filas[box_y][box_x] = actual
                 # g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
 
-                filas[box_y][box_x] = actual
-                g.DrawRectangle ( ((box_x * tam_celda + 5, box_y) * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black',fill_color = color) 
+                actual = filas[box_y][box_x]  
+                print(actual)
+                g.DrawRectangle ( ((box_x * tam_celda + 5, box_y) * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='yellow',fill_color = color) 
                 g.DrawText(actual, (box_x * tam_celda + 15, box_y * tam_celda + 12))
         except:
             pass
-
+#Funcion que recupera la longitud maxima de la palabra mas larga
 def getLongitudMaxima(palabras):
     longitud = 0
     for elemento in palabras.values():
@@ -161,7 +172,7 @@ def getLongitudMaxima(palabras):
                 longitud = len(diccionario['palabra'])
 
     return longitud
-
+#Funcion que recupera una lista con todas las palbras ingresadas
 def getAllPalabras(palabras):
     lista = []
     for elemento in palabras.values():
