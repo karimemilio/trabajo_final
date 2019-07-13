@@ -5,11 +5,13 @@ from pattern.text.es import tag
 from reportes import *
 
 def validarPattern(pal): #Devuelve J,N,B
-	tipo = (tag(pal))[0][1]
-	if tipo:
-		return (True,tipo[1])
-	else:
-		return (False)
+    tipo = (tag(pal))[0][1]
+    print("imprimi pal")
+    print(tag(pal))
+    if tipo:
+        return (True,tipo[1])
+    else:
+        return (False)
 
 def validarWiki(pal): #Devuelve adjective,noun,verb
     wik = WiktionaryParser()
@@ -50,6 +52,8 @@ def validar(dat,reporte,boton):
                 agregar(titu,reporte) #reporte de que pattern no valido, tomamos wiki
         return vw
     else:
+        print('entra al else')
+        print (vp)
         if vp[0]:
             text = None
             if boton == 'Agregar':
