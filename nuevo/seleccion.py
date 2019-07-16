@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
 import random
 
-colores = ['rojo', 'amarillo', 'blanco', 'verde']
-colors = ['red', 'yellow', 'white',  'green'] 
+colores = ['rojo', 'amarillo',  'verde', 'azul']
+colors = ['red', 'yellow', 'green','blue'] 
 
 def seleccion(dicc):
     cant = {}

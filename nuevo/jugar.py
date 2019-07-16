@@ -16,7 +16,7 @@ def check(aux):
     return True
 
 #Actualiza los datos seleccionados en la grilla
-def actualizar_datos(final,indice,y,x,color,estado_Actual):
+def actualizar_datos(final,y,x,color,estado_Actual):
     condicion = False
     for each in final:
         for elem in each['posiciones']:
@@ -78,7 +78,6 @@ def jugar(palabras, config):
         filas.append(columna)
 
     final_guardadas = []
-    indice_palabras = {}
     
     #Compara si las letras seleccionadas corresponden a todas las palabras,a su clasificacion y que no haya apretado otras letras de mas
     def comparar(final_guardadas,estado_Actual):
@@ -107,7 +106,7 @@ def jugar(palabras, config):
                 se_puede = True
                 try:
                     for i in range(fila, len(palabra)):
-                        if filas[i][columna] != '': #if filas[i-1][columna] != '':
+                        if filas[i][columna] != '':
                             se_puede = False
                             break
                     if se_puede:
@@ -118,7 +117,6 @@ def jugar(palabras, config):
                                 elemento = elemento.upper()
                             dic_posiciones = {}
                             dic_posiciones['pos'] = (fila,aux)
-                            indice_palabras[hash(fila,aux)] = palabra
                             dic_posiciones['selc'] = False
                             dic_posiciones['pintura'] = 'white'
                             diccionario['posiciones'].append(dic_posiciones)
@@ -149,7 +147,6 @@ def jugar(palabras, config):
                                 elemento = elemento.upper()
                             dic_posiciones = {}
                             dic_posiciones['pos'] = (fila,columna)
-                            indice_palabras[hash(fila,columna)] = palabra
                             dic_posiciones['selc'] = False
                             diccionario['posiciones'].append(dic_posiciones)
                             filas[fila-1][columna] = elemento
@@ -230,7 +227,7 @@ def jugar(palabras, config):
             box_y = mouse[1]//tam_celda
             letter_location = (box_y,box_x)
             try:
-                final_guardadas,condicion = actualizar_datos(final_guardadas,indice_palabras, box_y,box_x,color,estado_Actual)
+                final_guardadas,condicion = actualizar_datos(final_guardadas, box_y,box_x,color,estado_Actual)
                 actual = filas[box_y][box_x]     
                 coord = hash(box_y, box_x)
                 if estado_Actual[coord]['color'] == color:
