@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
 import random
 
-colores = ['rojo', 'amarillo', 'blanco', 'negro', 'verde']
-colors = ['red', 'yellow', 'white', 'black', 'green'] 
+colores = ['rojo', 'amarillo', 'blanco', 'verde']
+colors = ['red', 'yellow', 'white',  'green'] 
 
 def seleccion(dicc):
     cant = {}
@@ -28,6 +28,6 @@ def seleccion(dicc):
     cant['N'] = { 'cantidad': int(values[2]), 'color': colors[colores.index(values[3])] }
     cant['B'] = { 'cantidad': int(values[4]), 'color': colors[colores.index(values[5])] }
     cant['mayuscula'] = True if values[6] else False
-    cant['Horinzontal'] = True if values[8] else False
+    cant['Horizontal'] = True if values[8] else False
     cant['ayuda'] = True if values[10] else False
     return cant
