@@ -54,10 +54,9 @@ def jugar(palabras, config):
         #Diseño de la ventana con ayuda
         layout = [
                     [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
-                    [sg.Button('--Ayuda--',button_color = ('white','black'),key= 'A')],
                     [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
                     [sg.Button('Verbo', button_color=('black',config['B']['color'])),sg.Button('Adjetivo', button_color=('black',config['J']['color'])),sg.Button('Sustantivo', button_color=('black',config['N']['color']))],
-                    [sg.Button('Finalizar',key = 'fin'), sg.Button('Exit')]
+                    [sg.Button('--Ayuda--',button_color = ('white','black'),key= 'A'), sg.Button('Finalizar',key = 'fin'), sg.Button('Exit')]
                 ]
     else:
         #Diseño de la ventana sin ayuda
@@ -184,7 +183,7 @@ def jugar(palabras, config):
         for elem in palabras:
             for lista in palabras[elem]:
                 descri.append(lista['descripcion'])
-        sg.PopupTimed(descri)
+        sg.Popup(descri)
         
     #Crea la lista de estados_Actualues de las difenrentes letras de la sopa
     estado_Actual = {}
@@ -242,7 +241,7 @@ def jugar(palabras, config):
                     print(each)
                     print('------')
             except (UnboundLocalError):
-                print('Elegir color')
+                sg.Popup('No se seleccionó un color')
             except (IndexError):
                 print('Seleccion fuera de la grilla')
 

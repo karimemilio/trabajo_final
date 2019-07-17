@@ -1,13 +1,13 @@
 import PySimpleGUI as sg
-from pattern.web import Wiktionary as wik
+from pattern.web import Wiktionary as wiki
+from pattern.web import SEARCH
 from wiktionaryparser import WiktionaryParser
 from pattern.text.es import tag
 from reportes import *
 
 def validarPattern(pal): #Devuelve J,N,B
     tipo = (tag(pal))[0][1]
-    print("imprimi pal")
-    print(tag(pal))
+    print("Palabra ingresada: ", tag(pal))
     if tipo:
         return (True,tipo[1])
     else:
@@ -33,16 +33,11 @@ def validarWiki(pal): #Devuelve adjective,noun,verb
     except:
         return(False,False,False)
 
-# def reporte(titu):     
-
-# 	sg.PopupError(titu)
-
-
 def validar(dat,reporte,boton):
     vw = validarWiki(dat) #Retorna tupla (bool,tipo,definicion)
     vp = validarPattern(dat) #Devuelve tupla (boolean,tipo)
     if vw[0]:
-        if boton == 'Agregar':
+        if boton == 'Agregar palabra':
             if vp[0]:
                 if vw[1] != vp[1]:
                     titu = dat + ": La clasificación de Wiktionary no coincide con la de Pattern. Tomamos como válida la clasificación de Wiktionary"
@@ -52,18 +47,16 @@ def validar(dat,reporte,boton):
                 agregar(titu,reporte) #reporte de que pattern no valido, tomamos wiki
         return vw
     else:
-        print('entra al else')
-        print (vp)
         if vp[0]:
             text = None
-            if boton == 'Agregar':
+            if boton == 'Agregar palabra':
                 titu = dat + ": La clasificación de Wiktionary es inváida. Tomamos como válida la clasificación de Pattern"
                 agregar (titu,reporte)
                 defi = 'Ingrese una definicion para la palabra: ' + str(dat)    
                 text = sg.PopupGetText(defi, 'Definicion')
             return (vp[0],vp[1],text)
         else:
-            if boton == 'Agregar':
+            if boton == 'Agregar palabra':
                 titu = dat + ": No se encontró la palabra. No se ingresa"
                 agregar(titu,reporte)
-            return (False,1)    #No se encontro ni en wikidictionary ni en pattern
+            return (False,1,None)    #No se encontro ni en wikidictionary ni en pattern
