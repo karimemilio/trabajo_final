@@ -86,16 +86,16 @@ def jugar(palabras, config):
     def comparar(final_guardadas,estado_Actual):
         for each in final_guardadas:
             if not each['si']:
-                print('No se marcaron todas las palabras')
+                sg.Popup('No se marcaron todas las palabras')
                 return False                                    #False si faltan palabras
             color = config[each['tipo']]['color']
             for elem in each['posiciones']:
                 if elem['pintura'] != color:
-                    print('Las palabras no se marcaron con el color correcto')
+                    sg.Popup('Las palabras no se marcaron con el color correcto')
                     return  False                               #False si su clasificacion es incorrecta
         for i in estado_Actual: 
             if (estado_Actual[i]['apretado'] == True) and (estado_Actual[i]['esPalabra'] == False):
-                print('Se seleccionaron casilleros de mas')
+                sg.Popup('Se seleccionaron casilleros de mas')
                 return False                                    #False si hay letras de mas seleccionadas
         return True         
 
@@ -219,9 +219,9 @@ def jugar(palabras, config):
             ayuda()
         elif event == 'fin':
             if comparar(final_guardadas,estado_Actual):
-                print('Bien')
+                sg.Popup('La respuesta es correcta')
             else:
-                print('Mal')
+                sg.Popup('La respuesta es incorrecta')
         mouse = values['_GRAPH_']
         if event == '_GRAPH_':
             if mouse == (None, None):
@@ -241,13 +241,10 @@ def jugar(palabras, config):
                     estado_Actual[coord]['apretado'] = True
                 g.DrawRectangle((box_x * tam_celda + 5, box_y * tam_celda + 3), (box_x * tam_celda + tam_celda + 5, box_y * tam_celda + tam_celda + 3), line_color='black', fill_color = estado_Actual[coord]['color'])
                 g.DrawText(actual,(box_x * tam_celda + 15, box_y * tam_celda + 12))
-                # for each in final_guardadas:
-                #     print(each)
-                #     print('------')
             except (UnboundLocalError):
-                print('Elegir color')
+                sg.Popup('Elegir color')
             except (IndexError):
-                print('Seleccion fuera de la grilla')
+                sg.Popup('Seleccion fuera de la grilla')
 
 #Funcion que recupera la longitud maxima de la palabra mas larga
 def getLongitudMaxima(palabras):

@@ -10,7 +10,7 @@ import PySimpleGUI as sg
 def main():
 	palabras, config  = modulos.cargarInfo()
 	if config == None:
-		print('Fin de la ejecucion')
+		sg.Popup('Fin de la ejecución')
 	else:
 		modulos.jugar(palabras,config)
 

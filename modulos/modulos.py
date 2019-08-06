@@ -4,6 +4,17 @@ import seleccion as sel
 import jugar as jugar_modulo
 import PySimpleGUI as sg
 
+def hashClaves(aux):
+        if aux == 'J':
+                return 'Adjetivos'
+        elif aux == 'N':
+                return 'Sustantivos'
+        elif aux == 'B':
+                return 'Verbos'
+        else:
+                print('Hubo un error en el hashing de claves')
+                return None
+
 def esVacio(dicc):
     if len(dicc['J']) > 0 or len(dicc['N']) > 0 or len(dicc['B']) > 0 :
         return False
