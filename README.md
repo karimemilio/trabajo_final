@@ -11,7 +11,7 @@ Para ejecutar la aplicación
 
 1. <b>Instale las dependencias:</b>
     <br>``` pip3 install -r requirements.txt```
-2. <b>Ejecute main.py ubicada dentro del directorio /trabajo_final/nuevo/ con python3:</b>
+2. <b>Ejecute main.py ubicada dentro del directorio /trabajo_final/modulos/ con python3:</b>
     <br>```python3 main.py```
 
 * <i>La aplicación fue testeada en <b>Ubuntu 18.04 LTS</b></i>
