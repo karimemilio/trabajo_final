@@ -18,7 +18,7 @@ def validarPattern(pal): #Devuelve J,N,B
 
 def validarWiki(pal): #Devuelve adjective,noun,verb
     wik = WiktionaryParser()
-    wik.set_default_language('spanish')
+    wik.set_default_language('Spanish')
     try:
         word = (wik.fetch(pal))[0]
         defi = word['etymology']

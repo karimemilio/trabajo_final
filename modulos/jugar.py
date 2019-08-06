@@ -187,7 +187,7 @@ def jugar(palabras, config):
         for elem in palabras:
             for lista in palabras[elem]:
                 descri.append(lista['descripcion'])
-        sg.PopupTimed(descri)
+        sg.PopupOK(descri)
         
     #Crea la lista de estados_Actualues de las difenrentes letras de la sopa
     estado_Actual = {}

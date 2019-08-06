@@ -30,6 +30,8 @@ def generarPalabras(dicc):
             return None
         elif boton == 'Siguiente':
             return (dicc)
+        elif boton == 'ver_reporte':
+            sg.PopupOK(reporte)
         elif boton == 'Lista de palabras':
             lis = []
             for pos in dicc:
@@ -57,8 +59,7 @@ def generarPalabras(dicc):
                             dicc[tipo] = list(filter(lambda di:di['palabra']!=palabra, dicc[tipo]))
                             lista_palabras.remove(palabra)
                             mensaje='La palabra se eliminó'
-                    if boton == 'ver_reporte':
-                        print('reportes----------->',reporte)
+                    
                     else:   
                         mensaje='La palabra ingresada no está en la lista'
                 else:
