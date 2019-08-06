@@ -5,6 +5,16 @@ import PySimpleGUI as sg
 import validaciones
 import modulos
 
+def verReporte():
+        reporte = "reporte.txt"
+        with open(reporte, "r") as f:
+            lineas = f.readlines()
+        texto = ''
+
+        for linea in lineas:
+            texto += linea
+        sg.Popup(texto)
+
 def agregarPredefinidas(dicc):
     if dicc['J'] == []:
         dicc['J'].append({ 'palabra': 'bonito', 'descripcion': 'Que tiene belleza o atractivo y resulta agradable de contemplar o de escuchar.'})
@@ -50,6 +60,8 @@ def generarPalabras(dicc):
     tiposIngresados=('Adjetivos: ' + str(len(dicc['J'])) + '\n' + 'Sustantivos: ' + str(len(dicc['N'])) + '\n' + 'Verbos: ' + str(len(dicc['B']))) #Inicializo el mensaje a mostrar
     lista_palabras = []
     reporte = []
+    arch = open("reporte.txt", "w")
+    arch.close()
     while True:     #Se ingresan palabras hasta que se haga clic en 'Finalizar'
         boton, datos = ventanaPalabras.Read()   #Leo los datos de la ventana
         if boton is None:
@@ -70,7 +82,10 @@ def generarPalabras(dicc):
                 ventanaPalabras.Close()
                 return (dicc)
         elif boton == 'Reporte':
-            sg.PopupOK(reporte)
+            try:
+                verReporte()
+            except:
+                sg.Popup('Reporte inexistente')
         elif boton == 'Lista de palabras':
             mostrarPalabras(dicc)
         else:
@@ -85,9 +100,12 @@ def generarPalabras(dicc):
                         if palabra in lista_palabras:
                             mensaje='La palabra ya fue ingresada'
                         else:
-                            dicc[tipo].append({ 'palabra': palabra, 'descripcion': ''.join(defi) })
-                            mensaje = 'La palabra fue ingresada correctamente'
-                            lista_palabras.append(palabra)
+                            try:
+                                dicc[tipo].append({ 'palabra': palabra, 'descripcion': ''.join(defi) })
+                                mensaje = 'La palabra fue ingresada correctamente'
+                                lista_palabras.append(palabra)
+                            except:
+                                sg.Popup('No se pudo agregar la palabra')
                     if boton == 'Eliminar palabra': 
                         if palabra in lista_palabras:
                             dicc[tipo] = list(filter(lambda di:di['palabra']!=palabra, dicc[tipo]))

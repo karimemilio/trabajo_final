@@ -49,9 +49,15 @@ def validar(dat,reporte,boton):
             if vp[0]:
                 if vw[1] != vp[1]:
                     titu = dat + ": La clasificación de Wiktionary no coincide con la de Pattern. Tomamos como válida la clasificación de Wiktionary"
+                    arch = open("reporte.txt", "a+")
+                    arch.write(titu)
+                    arch.close()
                     agregar(titu,reporte) #reporte que son distintos tipos, tomamos wiki
             else:
                 titu = dat + ": La clasificación de Pattern es inváida. Tomamos como válida la clasificación de Wiktionary"
+                arch = open("reporte.txt", "a+")
+                arch.write(titu)
+                arch.close()
                 agregar(titu,reporte) #reporte de que pattern no valido, tomamos wiki
         return vw
     else:
@@ -59,12 +65,18 @@ def validar(dat,reporte,boton):
             text = None
             if boton == 'Agregar palabra':
                 titu = dat + ": La clasificación de Wiktionary es inváida. Tomamos como válida la clasificación de Pattern"
+                arch = open("reporte.txt", "a+")
+                arch.write(titu)
+                arch.close()
                 agregar (titu,reporte)
-                defi = 'Ingrese una definicion para la palabra: ' + str(dat)    
+                defi = 'Ingrese una definicion para la palabra: ' + str(dat)
                 text = sg.PopupGetText(defi, 'Definicion')
             return (vp[0],vp[1],text)
         else:
             if boton == 'Agregar palabra':
                 titu = dat + ": No se encontró la palabra. No se ingresa"
+                arch = open("reporte.txt", "a+")
+                arch.write(titu)
+                arch.close()
                 agregar(titu,reporte)
             return (False,1,None)    #No se encontro ni en wikidictionary ni en pattern
