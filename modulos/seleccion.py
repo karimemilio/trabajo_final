@@ -32,6 +32,8 @@ def seleccion(dicc):
         cant['mayuscula'] = True if values[6] else False
         cant['Horizontal'] = True if values[8] else False
         cant['ayuda'] = True if values[10] else False
+        if event == 'Volver':
+            return None
         if (cant['B']['color'] != cant['N']['color']) and (cant['B']['color'] != cant['J']['color']) and (cant['N']['color'] != cant['J']['color']):
             break
         else:

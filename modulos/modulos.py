@@ -41,6 +41,8 @@ def cargarInfo():
                 return None,None
             else:
                 resultado = sel.seleccion(dicc)
+                if resultado == None:
+                        return None
         return (dicc,resultado)
 
 def jugar(palabras, config):
