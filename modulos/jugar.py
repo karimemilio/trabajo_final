@@ -152,7 +152,7 @@ def jugar(palabras, config):
                             dic_posiciones['pos'] = (fila,columna)
                             dic_posiciones['selc'] = False
                             diccionario['posiciones'].append(dic_posiciones)
-                            filas[fila-1][columna] = elemento
+                            filas[fila][columna] = elemento
                             columna += 1
                         final_guardadas.append(diccionario)
                         no_termino = False
