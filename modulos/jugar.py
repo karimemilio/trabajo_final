@@ -222,7 +222,7 @@ def jugar(palabras, config):
                 sg.Popup('La respuesta es correcta')
             else:
                 sg.Popup('La respuesta es incorrecta')
-        else:
+        elif event == 'Exit':
             sg.Popup('FIN DEL JUEGO')
             break
         mouse = values['_GRAPH_']
