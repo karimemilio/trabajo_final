@@ -98,10 +98,11 @@ def jugar(palabras, config):
                 sg.Popup('Se seleccionaron casilleros de mas')
                 return False                                    #False si hay letras de mas seleccionadas
         return True         
-
+    buscar = []
     #Arma de manera vertical la sopa
     def armado_Vertical(lista_de_palabras):         
         for palabra,tipo in lista_de_palabras:
+            buscar.append(palabra)
             no_termino = True
             while no_termino:
                 fila = random.randint(0, cant_celdas - len(palabra))
@@ -131,8 +132,9 @@ def jugar(palabras, config):
                     pass
 
     #Arma de manera horizontal la sopa
-    def armado_Horizontal(lista_de_palabras):         
+    def armado_Horizontal(lista_de_palabras):       
         for palabra,tipo in lista_de_palabras:
+            buscar.append(palabra)  
             no_termino = True
             while no_termino:
                 fila = random.randint(0, cant_celdas)
@@ -223,6 +225,8 @@ def jugar(palabras, config):
             else:
                 sg.Popup('La respuesta es incorrecta')
         elif event == 'Exit':
+            if not comparar(final_guardadas,estado_Actual):
+                sg.Popup('Las palabras a adivinar eran: ', buscar)
             sg.Popup('FIN DEL JUEGO')
             break
         mouse = values['_GRAPH_']
