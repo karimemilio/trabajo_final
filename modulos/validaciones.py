@@ -1,82 +1,71 @@
 """Validaciones se encarga de validar cada una de las palabras ingresadas , primero con wikitionary y despues con Pattern, y partir de sus resultados
     hacer diferentes comparaciones para generar el reporte deseado"""
 import PySimpleGUI as sg
-from pattern.web import Wiktionary as wiki
+from pattern.web import Wiktionary,SEARCH
 from pattern.web import SEARCH
-from wiktionaryparser import WiktionaryParser
 from pattern.text.es import tag
 
-def agregar(texto,reporte):
-    reporte.append(texto)
-    print('--------REPORTE----------')
-    for each in reporte:
-        print(each)
-        print()
+def hashTipo (tipo):
+    if tipo == 'NN':
+        return 'sustantivo'
+    elif tipo == 'JJ':
+        return  'adjetivo'
+    else:
+        return 'verbo'
 
-def validarPattern(pal): #Devuelve J,N,B
+def validarPattern(pal): #Devuelve adjetivo, sustantivo, verbo
     tipo = (tag(pal))[0][1]
-    print("Palabra ingresada: ", tag(pal))
     if tipo:
-        return (True,tipo[1])
+        tipo = hashTipo(tipo)
+        return (True,tipo)
     else:
         return (False)
 
 def validarWiki(pal): #Devuelve adjective,noun,verb
-    wik = WiktionaryParser()
-    wik.set_default_language('spanish')
+    wik = Wiktionary(language = 'es')
     try:
-        word = (wik.fetch(pal))[0]
-        defi = word['etymology']
-        tipo = word['definitions'][0]['partOfSpeech']
-        if (len(defi) > 1):
-            if tipo == 'adjective':
-                tipo = 'J'
-            elif tipo == 'noun':
-                tipo = 'N'
-            else:
-                tipo = 'B'
-            return (True,tipo,defi[:-2])
-        else:
-            return (False,False,False)   ##Se recupera el tipo con la key partOfSpeech
+        tipo = wik.search(pal, type = SEARCH).sections[3].title.split()[0].lower()
+        secc = wik.search(pal, type = SEARCH).sections[3].string
+        secc = secc.split('\n')
+        for i in range(0,len(secc)):
+            if (secc[i] != ''):
+                if (secc[i][0] == '1'):
+                    defi = secc[i][1:]
+                    break
+        return(True,tipo,defi)
     except:
         return(False,False,False)
 
-def validar(dat,reporte,boton):
+def validar(dat,lis,archivo):
+    arch = open(archivo, "ta")
     vw = validarWiki(dat) #Retorna tupla (bool,tipo,definicion)
     vp = validarPattern(dat) #Devuelve tupla (boolean,tipo)
     if vw[0]:
-        if boton == 'Agregar palabra':
-            if vp[0]:
-                if vw[1] != vp[1]:
-                    titu = dat + ": La clasificación de Wiktionary no coincide con la de Pattern. Tomamos como válida la clasificación de Wiktionary"
-                    arch = open("reporte.txt", "a+")
-                    arch.write(titu)
-                    arch.close()
-                    agregar(titu,reporte) #reporte que son distintos tipos, tomamos wiki
-            else:
-                titu = dat + ": La clasificación de Pattern es inváida. Tomamos como válida la clasificación de Wiktionary"
-                arch = open("reporte.txt", "a+")
-                arch.write(titu)
-                arch.close()
-                agregar(titu,reporte) #reporte de que pattern no valido, tomamos wiki
+        if (dat in lis):
+            return (False,vw[1], 'DEL')
+        if vp[0]:
+            if vw[1] != vp[1]:
+                arch.write(dat + ": La clasificación de Wiktionary no coincide con la de Pattern. Tomamos como válida la clasificación de Wiktionary\n")
+        else:
+            arch.write(dat + ": La clasificación de Pattern es inváida. Tomamos como válida la clasificación de Wiktionary\n")
+        arch.close()
         return vw
     else:
+        if (dat in lis):
+            arch.close()
+            return (False,vp[1], 'DEL')
         if vp[0]:
             text = None
-            if boton == 'Agregar palabra':
-                titu = dat + ": La clasificación de Wiktionary es inváida. Tomamos como válida la clasificación de Pattern"
-                arch = open("reporte.txt", "a+")
-                arch.write(titu)
+            arch.write(dat + ": La clasificación de Wiktionary es inváida. Tomamos como válida la clasificación de Pattern\n")
+            defi = 'Ingrese una definicion para la palabra: ' + str(dat)
+            text = sg.PopupGetText(defi, 'Definicion',background_color='#b3d4fc')
+            if (text == None):
+                arch.write(dat + ": No se encontró la palabra. No se ingresa\n")
                 arch.close()
-                agregar (titu,reporte)
-                defi = 'Ingrese una definicion para la palabra: ' + str(dat)
-                text = sg.PopupGetText(defi, 'Definicion')
+                return (False,1,None)
+            arch.close()
             return (vp[0],vp[1],text)
         else:
-            if boton == 'Agregar palabra':
-                titu = dat + ": No se encontró la palabra. No se ingresa"
-                arch = open("reporte.txt", "a+")
-                arch.write(titu)
-                arch.close()
-                agregar(titu,reporte)
+            arch.write(dat + ": No se encontró la palabra. No se ingresa\n")
+            arch.close()
             return (False,1,None)    #No se encontro ni en wikidictionary ni en pattern

@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import string
 import random
+import copy
 import sys
 
 """ EL modulo jugar  crea la grilla de la sopa de letras, y a partir de la configuracion que se le pasa por parametros ,configura  la grilla con dichos parametros
@@ -43,15 +44,19 @@ def actualizar_datos(final,y,x,color,estado_Actual):
                 break   
     return final,condicion
 
-
-
 def jugar(palabras, config):
-    cant_celdas = getLongitudMaxima(palabras) + 3 #Cantidad de celdas
-    tam_celda = 20 #Tamaño de cada celda
-    tam_grilla = cant_celdas*tam_celda +200
+    ####################CAMBIOS################
+    cant_celdas = getLongitudMaxima(palabras) + 5 #Cantidad de celdas
+    if cant_celdas < 15: 
+        tam_celda = 20 
+    else:
+        tam_celda = 15 #Tamaño de cada celda
+    tam_grilla = cant_celdas*tam_celda +300
     grilla55 = (tam_grilla*55)/100
     mayus = string.ascii_lowercase
     minus = string.ascii_uppercase
+
+    solucion = [[sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_SOL_', change_submits=True, drag_submits=False)]]
 
     if config['ayuda'] == True:
         #Diseño de la ventana con ayuda
@@ -59,16 +64,14 @@ def jugar(palabras, config):
                     [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
                     [sg.Button('--Ayuda--',button_color = ('white','black'),key= 'A')],
                     [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
-                    [sg.Button('Verbo', button_color=('black',config['B']['color'])),sg.Button('Adjetivo', button_color=('black',config['J']['color'])),sg.Button('Sustantivo', button_color=('black',config['N']['color']))],
-                    [sg.Button('Finalizar',key = 'fin'), sg.Button('Exit')]
+                    [sg.Button('Verbo', button_color=('black',config['verbo']['color'])),sg.Button('Adjetivo', button_color=('black',config['adjetivo']['color'])),sg.Button('Sustantivo', button_color=('black',config['sustantivo']['color'])), sg.Button('Finalizar',key = 'fin'), sg.Button('Exit')]
                 ]
     else:
         #Diseño de la ventana sin ayuda
         layout = [
                     [sg.Text('Sopa de letras'), sg.Text('', key='_OUTPUT_')],
                     [sg.Graph((tam_grilla,tam_grilla), (0,grilla55), (grilla55,0), key='_GRAPH_', change_submits=True, drag_submits=False)],
-                    [sg.Button('Verbo', button_color=('black',config['B']['color'])),sg.Button('Adjetivo', button_color=('black',config['J']['color'])),sg.Button('Sustantivo', button_color=('black',config['N']['color']))],
-                    [sg.Button('Finalizar',key = 'fin'), sg.Button('Exit')]
+                    [sg.Button('Verbo', button_color=('black',config['verbo']['color'])),sg.Button('Adjetivo', button_color=('black',config['adjetivo']['color'])),sg.Button('Sustantivo', button_color=('black',config['sustantivo']['color'])), sg.Button('Finalizar',key = 'fin'), sg.Button('Exit')]
                 ]
 
     #Crear estructura
@@ -168,7 +171,8 @@ def jugar(palabras, config):
         armado_Horizontal(lista_de_palabras)
     else:
         armado_Vertical(lista_de_palabras)
-
+    
+    aux_filas = copy.deepcopy(filas)
 
     #Insertar letras en el resto de la matriz
     nro_columna = 0
@@ -199,7 +203,7 @@ def jugar(palabras, config):
             estado_Actual[coor] = {'apretado' : False, 'color' : 'white', 'esPalabra' : False} 
 
     #Crear la vista
-    window = sg.Window('Juego para niños', ).Layout(layout).Finalize()
+    window = sg.Window('Juego para niños', resizable=True).Layout(layout).Finalize()
 
     g = window.FindElement('_GRAPH_')
     #Crea la matriz
@@ -212,11 +216,11 @@ def jugar(palabras, config):
         if event is None or 'tipo' == 'Exit':
             break
         if event == 'Sustantivo':
-                color = config['N']['color']
+                color = config['sustantivo']['color']
         elif event == 'Adjetivo':
-                color = config['J']['color']
+                color = config['adjetivo']['color']
         elif event == 'Verbo':
-            color=config['B']['color']
+            color=config['verbo']['color']
         elif event == 'A':
             ayuda()
         elif event == 'fin':
@@ -227,6 +231,18 @@ def jugar(palabras, config):
         elif event == 'Exit':
             if not comparar(final_guardadas,estado_Actual):
                 sg.Popup('Las palabras a adivinar eran: ', buscar)
+                #Crear la vista
+                ventana = sg.Window('Solución', resizable=True).Layout(solucion).Finalize()
+                sol_aux = ventana.FindElement('_SOL_')
+                 #Crea la matriz
+                for x1 in range(cant_celdas):
+                    for y1 in range(cant_celdas):
+                        sol_aux.DrawRectangle((y1 * tam_celda + 5, x1 * tam_celda + 3), (y1 * tam_celda + tam_celda + 5, x1 * tam_celda + tam_celda + 3), fill_color = 'white',line_color='black')
+                        sol_aux.DrawText('{}'.format(aux_filas[x1][y1]), (y1 * tam_celda + 15, x1 * tam_celda + 12))
+                while True:
+                    evento, valor = ventana.Read()
+                    if evento != None:
+                        break
             sg.Popup('FIN DEL JUEGO')
             break
         mouse = values['_GRAPH_']
